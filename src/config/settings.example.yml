@@ -9,8 +9,8 @@
 
 bot_settings:
   token: "" # Token from https://discord.com/developers/applications - The token you would like the bot to run on.
-  register_commands: false # true or false - If bot should register slash commands on startup
-  global_commands: false # true or false - true registers commands globally (production), false registers them only to the guilds below (development). Commands with a 'guilds' option are always guild-only.
+  register_commands: true # true or false - If bot should register slash commands on startup
+  global_commands: true # true or false - true registers commands globally (production), false registers them only to the guilds below (development). Commands with a 'guilds' option are always guild-only.
   guilds: # Follow the format below - For each guild you want the slash commands to be registered in. (You can add multiple)
     - name: "dev"
       id: "YOUR_GUILD_ID"
@@ -24,8 +24,21 @@ bot_activity:
   type: "watching" # watching, playing, competing, listening - The type of activity you would like the bot to have
   interval: 30 # In seconds - Recommended 30 or more due to discord rate limits
   activities: # The activities you would like displayed - Must be at least one
-    - "Achlon make me!"
-    - "achlon.dev!"
+    - "who filled out the form"
+    - "/status"
+
+
+# Google Sheets
+
+google:
+  credentials_file: "./service-account.json" # Path to the service account JSON key (see README). Every server shares its sheets with this account's email.
+
+
+# Form Tracker
+
+tracker:
+  cache_seconds: 120 # How long sheet data is reused before re-reading. Lower = fresher, but more Google API calls.
+  database_file: "./data/tracker.db" # Where each server's setup, reminders and exemptions are saved
 
 
 # Messages
