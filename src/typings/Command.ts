@@ -48,6 +48,8 @@ export type CommandType = {
     guilds?: string[];
     disabled?: boolean;
     userPermissions?: PermissionResolvable[];
+    adminOnly?: boolean; // Manage Server or the guild's admin role (set with /setup admin-role)
+    anyChannel?: boolean; // ignores the guild's /channels restriction
     run: RunFunction;
     autocomplete?: AutoCompleteFunction;
 } & ChatInputApplicationCommandData;

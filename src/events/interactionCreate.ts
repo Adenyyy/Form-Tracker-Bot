@@ -1,4 +1,6 @@
-import { AnySelectMenuInteraction, CommandInteractionOptionResolver, Events } from "discord.js";
+import { AnySelectMenuInteraction, CommandInteractionOptionResolver, Events, MessageFlags } from "discord.js";
+import { CommandType } from "../typings/Command.js";
+import database from "../services/database.js";
 import { client } from "../index.js";
 import { Event } from "../structures/Event.js";
 import { AutoCompleteExtendedInteraction, ExtendedInteraction } from "../typings/Command.js";
@@ -17,6 +19,9 @@ export default new Event(Events.InteractionCreate, async (interaction) => {
         const command = client.commands.get(interaction.commandName);
         if (!command) return interaction.reply({ embeds: [embed.error("You have used a command that does not exist.")], flags: utils.replyFlags() });
 
+        const blocked = commandBlockedReason(interaction as ExtendedInteraction, command);
+        if (blocked) return interaction.reply({ embeds: [embed.error(blocked)], flags: MessageFlags.Ephemeral });
+
         try {
             await command.run({
                 args: interaction.options as CommandInteractionOptionResolver,
@@ -26,6 +31,7 @@ export default new Event(Events.InteractionCreate, async (interaction) => {
             sendInfoMessage(`( Chat Input ) - @${interaction.user.username} ran the command: ${command.name}`);
         } catch (e) {
             sendErrorMessage(`Error while trying to run command: ${command.name}`, e);
+            await utils.replyError(interaction, e).catch(() => { });
         }
     }
 
@@ -97,6 +103,7 @@ export default new Event(Events.InteractionCreate, async (interaction) => {
             sendInfoMessage(`@${interaction.user.username} clicked the button: ${button.name}${values.length ? ` [Values: ${values.join(", ")}]` : ""}`);
         } catch (e) {
             sendErrorMessage(`Error while trying to run button: ${button.name}`, e);
+            await utils.replyError(interaction, e).catch(() => { });
         }
     }
 
@@ -134,6 +141,18 @@ export default new Event(Events.InteractionCreate, async (interaction) => {
             });
         } catch (e) {
             sendErrorMessage(`Error while trying to autocomplete command: ${command.name}`, e);
+            await interaction.respond([]).catch(() => { });
         }
     }
 });
+
+// Checks the guild-only, admin and allowed-channel rules before a command runs
+function commandBlockedReason(interaction: ExtendedInteraction, command: CommandType): string | null {
+    if (!interaction.inGuild()) return "This bot's commands only work in a server.";
+    const config = database.getConfig(interaction.guildId);
+    if (command.adminOnly && !utils.isAdmin(interaction.member, config)) return "Only server admins can use this command.";
+    if (!command.anyChannel && config.allowed_channels.length && !config.allowed_channels.includes(interaction.channelId) && !utils.isAdmin(interaction.member, config)) {
+        return `Commands can only be used in ${config.allowed_channels.map(id => `<#${id}>`).join(", ")}.`;
+    }
+    return null;
+}
