@@ -1,21 +1,22 @@
 {
-  "name": "discord-bot-template",
+  "name": "form-tracker-bot",
   "version": "1.0.0",
-  "description": "A Bot Template made with typescript!",
+  "description": "Discord bot that tracks Google Form submissions against a member sheet and reminds people who haven't filled it out",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Adenyyy/Typescript-Discord-Bot-Template.git"
+    "url": "https://github.com/Adenyyy/Form-Tracker-Bot.git"
   },
   "main": "build/index.js",
   "scripts": {
     "start": "npm run build && node build/index.js",
     "start:dev": "tsx watch src/index.ts",
     "build": "rimraf ./build && tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "test": "tsx --test tests/*.test.ts"
   },
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13"
   },
   "keywords": [],
   "author": {
