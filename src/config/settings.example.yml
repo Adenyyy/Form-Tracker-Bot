@@ -1,0 +1,44 @@
+# ================================================== #
+#                                                    #
+#                      Settings                      #
+#                                                    #
+# ================================================== #
+
+
+# Bot Settings 
+
+bot_settings:
+  token: "" # Token from https://discord.com/developers/applications - The token you would like the bot to run on.
+  register_commands: false # true or false - If bot should register slash commands on startup
+  global_commands: false # true or false - true registers commands globally (production), false registers them only to the guilds below (development). Commands with a 'guilds' option are always guild-only.
+  guilds: # Follow the format below - For each guild you want the slash commands to be registered in. (You can add multiple)
+    - name: "dev"
+      id: "YOUR_GUILD_ID"
+
+
+# Bot Activity
+
+bot_activity:
+  enabled: true # true or false - If bot should have activities
+  status: "online" # online, idle, dnd, invisible - The status you would like the bot to have
+  type: "watching" # watching, playing, competing, listening - The type of activity you would like the bot to have
+  interval: 30 # In seconds - Recommended 30 or more due to discord rate limits
+  activities: # The activities you would like displayed - Must be at least one
+    - "Achlon make me!"
+    - "achlon.dev!"
+
+
+# Messages
+
+messages:
+  ephemeral: true
+  colors:
+    default: "#00BFFF"
+    success: "#00FF00"
+    warning: "#FFA500"
+    error: "#FF0000"
+
+
+# Debugging
+
+debug: false # true or false - Only enable if you know what you are doing!

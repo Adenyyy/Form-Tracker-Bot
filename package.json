@@ -1,0 +1,42 @@
+{
+  "name": "discord-bot-template",
+  "version": "1.0.0",
+  "description": "A Bot Template made with typescript!",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Adenyyy/Typescript-Discord-Bot-Template.git"
+  },
+  "main": "build/index.js",
+  "scripts": {
+    "start": "npm run build && node build/index.js",
+    "start:dev": "tsx watch src/index.ts",
+    "build": "rimraf ./build && tsc",
+    "watch": "tsc -w"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Aden",
+    "url": "https://www.linkedin.com/in/adenyap"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@googleapis/sheets": "^18.1.1",
+    "chalk": "^6.0.1",
+    "discord.js": "^14.27.0",
+    "glob": "^13.0.6",
+    "js-yaml": "^5.5.0",
+    "luxon": "^3.7.2",
+    "table": "^6.9.0"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.7.6",
+    "@types/node": "^24.19.2",
+    "rimraf": "^6.1.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}
