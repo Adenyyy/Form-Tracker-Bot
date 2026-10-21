@@ -3,6 +3,7 @@ import { client } from "../index.js";
 import chalk from "chalk";
 import { sendErrorMessage, sendInfoMessage } from "../utils/logger.js";
 import { ActivityType, Events, PresenceStatusData } from "discord.js";
+import reminders from "../services/reminders.js";
 
 const activityTypes: Record<string, ActivityType> = {
     watching: ActivityType.Watching,
@@ -14,6 +15,7 @@ const activityTypes: Record<string, ActivityType> = {
 export default new Event(Events.ClientReady, () => {
     sendInfoMessage(`Client logged in as: ${chalk.blueBright.underline(client.user.tag)}`);
     if (client.config.bot_activity.enabled === true) cycleActivities();
+    reminders.startScheduler();
 });
 
 function cycleActivities() {
