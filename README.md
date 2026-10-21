@@ -125,4 +125,8 @@ src/
 
 ## License
 
-MIT
+[MIT](LICENSE)
+
+## Author
+
+Made by Aden. Connect with me on [LinkedIn](https://www.linkedin.com/in/adenyap).
