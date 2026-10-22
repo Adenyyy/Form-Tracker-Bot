@@ -10,7 +10,7 @@
 bot_settings:
   token: "" # Token from https://discord.com/developers/applications - The token you would like the bot to run on.
   register_commands: true # true or false - If bot should register slash commands on startup
-  global_commands: true # true or false - true registers commands globally (production), false registers them only to the guilds below (development). Commands with a 'guilds' option are always guild-only.
+  global_commands: false # true or false - true registers commands globally (production), false registers them only to the guilds below (development). Commands with a 'guilds' option are always guild-only.
   guilds: # Follow the format below - For each guild you want the slash commands to be registered in. (You can add multiple)
     - name: "dev"
       id: "YOUR_GUILD_ID"

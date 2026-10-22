@@ -95,7 +95,7 @@ cp src/config/settings.example.yml src/config/settings.yml
 Edit `src/config/settings.yml`:
 
 - `bot_settings.token`: your bot token
-- `bot_settings.global_commands`: `true` for a public bot. Use `false` and list your test server under `guilds` while developing.
+- `bot_settings.global_commands`: starts as `false`, which registers commands only to the servers under `guilds` (development). Set it to `true` when you go public. Switching from `false` to `true` clears the server copies. Switching back leaves the global copies in place, so commands show up twice until you clear them.
 - `google.credentials_file`: path to the service account key
 - `tracker.cache_seconds`: how long sheet data is reused (default 120)
 - `tracker.database_file`: where each server's setup is stored (default `./data/tracker.db`)
