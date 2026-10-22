@@ -78,8 +78,11 @@ const sheets = {
     // Turns a Google API error into something worth showing in Discord
     describeError(e: any): string {
         const status = e?.code ?? e?.response?.status;
-        if (status === 403) return `The bot can't open that sheet. Share it with \`${sheets.serviceAccountEmail() ?? "the service account"}\` as a Viewer.`;
+        const reason = e?.errors?.[0]?.reason ?? e?.response?.data?.error?.status;
+        if (status === 403 && /SERVICE_DISABLED|accessNotConfigured/i.test(`${reason} ${e?.message}`)) return "The Google Sheets API isn't enabled for the bot's Google Cloud project. The bot owner needs to enable it.";
+        if (status === 403) return `The bot can't open that sheet. Share it with \`${sheets.serviceAccountEmail() ?? "the service account"}\` as a Viewer. If your Google account belongs to a school or work organization, it may block sharing outside the organization.`;
         if (status === 404) return "That spreadsheet doesn't exist. Check the link.";
+        if (status === 400 && /not supported for this document/i.test(e?.message ?? "")) return "That file is an Excel (.xlsx) file, not a Google Sheet. Open it and use File → Save as Google Sheets, then link the new sheet.";
         if (e?.code === "ENOENT") return "The bot's Google credentials file is missing. The bot owner needs to set `google.credentials_file` in settings.yml.";
         return `Google Sheets error: ${e?.message ?? e}`;
     }

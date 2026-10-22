@@ -156,7 +156,16 @@ export default new Command({
             const responses = sheets.parseUrl(args.getString("responses", true));
             if (!members || !responses) return interaction.followUp({ embeds: [embed.error("Those don't look like Google Sheets links.")] });
 
-            const [membersTab, responsesTab] = await Promise.all([sheets.resolveTab(members.id, members.gid), sheets.resolveTab(responses.id, responses.gid)]);
+            // Open each sheet separately so the error says which one the bot can't read
+            const [membersResult, responsesResult] = await Promise.allSettled([sheets.resolveTab(members.id, members.gid), sheets.resolveTab(responses.id, responses.gid)]);
+            const failures = [
+                membersResult.status === "rejected" ? `**Members sheet:** ${sheets.describeError(membersResult.reason)}` : null,
+                responsesResult.status === "rejected" ? `**Responses sheet:** ${sheets.describeError(responsesResult.reason)}` : null
+            ].filter(Boolean);
+            if (failures.length || membersResult.status === "rejected" || responsesResult.status === "rejected") {
+                return interaction.followUp({ embeds: [embed.error(failures.join("\n\n"))] });
+            }
+            const [membersTab, responsesTab] = [membersResult.value, responsesResult.value];
             const [memberHeaders, responseHeaders] = await Promise.all([sheets.readHeaders(members.id, membersTab.title), sheets.readHeaders(responses.id, responsesTab.title)]);
             if (!memberHeaders.length || !responseHeaders.length) return interaction.followUp({ embeds: [embed.error("One of the sheets has an empty first row. The first row must hold the column headers.")] });
 
