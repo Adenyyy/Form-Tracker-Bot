@@ -52,7 +52,8 @@ const embed = {
 
         if (timestamp) embed.setTimestamp();
 
-        if (footerText || footerIcon) embed.setFooter({ text: footerText, iconURL: footerIcon });
+        // discord.js rejects an empty iconURL, so only pass it when set
+        if (footerText || footerIcon) embed.setFooter({ text: footerText || "​", iconURL: footerIcon || undefined });
 
         return embed;
     }
